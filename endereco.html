@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lanh="pt-BR">
+<head>
+	
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Busca de CEP</title>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+</head>
+<body>
+
+<div class="container">
+	<form action="#" onsubmit="return false" class="col s12">
+		<div class="row">
+			<h5>Busca de CEP</h5>
+		</div>
+		<div class="row">
+			<div class="input-field col s6">
+				<input type="tel" placeholder="Informe o CEP" id="cep" name="cep" autofocus>
+				<label for="cep" class="active">CEP</label>
+			</div>
+			<div class="input-field col s6">
+				<input type="text" placeholder="UF" name="uf" id="uf">
+				<label for="uf" class="active">UF</label>
+			</div>
+		</div>		
+		<div class="row">
+			<div class="input-field col s6">
+				<input type="text" placeholder="Informe a Cidade" id="cidade" name="cidade" >
+				<label for="cidade" class="active">Cidade</label>
+			</div>
+			<div class="input-field col s6">
+				<input type="text" placeholder="Informe o Bairro" name="bairro" id="bairro">
+				<label for="bairro" class="active">Bairro</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s8">
+				<input type="text" placeholder="Informe o seu Endereço" name="endereco" id="endereco">
+				<label for="endereco" class="active">Endereço</label>
+			</div>
+			
+			<div class="input-field col s4">
+				<input type="text" placeholder="Informe o Número do Endereço" name="nr_end" id="nr_end">
+				<label for="nr_end" class="active">Número</label>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.0.0.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+	// Aplica a máscara no campo de CEP
+	$("#cep").mask("99999-999");
+
+	// Adiciona o evento 'blur' ao campo de CEP
+	$("#cep").blur(function() {
+		var cep = $(this).val().replace("-", ""); // Remove o traço do CEP
+
+		// Verifica se o CEP é válido (apenas números e 8 dígitos)
+		if(cep.length === 8 && !isNaN(cep)) {
+			// Realiza a chamada à API para buscar as informações do CEP
+			fetch(`https://brasilapi.com.br/api/cep/v1/${cep}`)
+				.then(response => response.json()) // Converte a resposta para JSON
+				.then(data => {
+					// Preenche os campos com os dados retornados pela API
+					$("#uf").val(data.state);  // Estado (UF)
+					$("#cidade").val(data.city); // Cidade
+					$("#bairro").val(data.neighborhood); // Bairro
+					$("#endereco").val(data.street); // Endereço
+					$("#nr_end").focus(); // Foca no campo de Número
+					
+					// Atualiza os labels dos campos
+					M.updateTextFields();
+				})
+				.catch(error => {
+					alert("Erro ao buscar o CEP. Verifique se o CEP está correto.");
+				});
+		} else {
+			alert("CEP inválido. Certifique-se de que o CEP tem 8 dígitos.");
+		}
+	});
+});
+
+</script>
+
+</body>
+</html>
+<!-- 
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Busca de CEP</title>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+</head>
+<body>
+
+
+<div class="container">
+	<form action="#" onsubmit="return false" class="col s12">
+		<div class="row">
+			<h5>Busca de CEP</h5>
+		</div>
+		<div class="row">
+			<div class="input-field col s6">
+				<input type="tel" placeholder="Informe o CEP" id="cep" name="cep" autofocus>
+				<label for="cep" class="active">CEP</label>
+			</div>
+			<div class="input-field col s6">
+				<input type="text" placeholder="UF" name="uf" id="uf">
+				<label for="uf" class="active">UF</label>
+			</div>
+		</div>		
+		<div class="row">
+			<div class="input-field col s6">
+				<input type="text" placeholder="Informe a Cidade" id="cidade" name="cidade" >
+				<label for="cidade" class="active">Cidade</label>
+			</div>
+			<div class="input-field col s6">
+				<input type="text" placeholder="Informe o Bairro" name="bairro" id="bairro">
+				<label for="bairro" class="active">Bairro</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s8">
+				<input type="text" placeholder="Informe o seu Endereço" name="endereco" id="endereco">
+				<label for="endereco" class="active">Endereço</label>
+			</div>
+			
+			<div class="input-field col s4">
+				<input type="text" placeholder="Informe o Número do Endereço" name="nr_end" id="nr_end">
+				<label for="nr_end" class="active">Número</label>
+			</div>
+		</div>
+	</form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.0.0.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+	$("#cep").mask("99999-999");
+});
+
+
+
+addEventListener('blur',(event) => {
+	
+})
+
+</script>
+</body>
+</html>
