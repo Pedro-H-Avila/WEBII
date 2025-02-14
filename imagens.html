@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria de Imagens</title>
+</head>
+<body>
+    <h1>Galeria de Imagens do Garfield</h1>
+    <img id="imagem" src="" alt="Imagem da galeria" width="600">
+    <br>
+    <button onclick="carregarProximaImagem()">Próxima</button>
+
+    <script>
+        const servidorUrl = 'http://localhost:3000/imagens';
+
+        // Carrega a primeira imagem PNG ao abrir a página
+        window.onload = function() {
+            fetch(servidorUrl + '/png')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('imagem').src = data.url;
+                })
+                .catch(error => console.error('Erro ao carregar imagem PNG:', error));
+        };
+
+        // Carrega a próxima imagem na galeria
+        function carregarProximaImagem() {
+            fetch(servidorUrl)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('imagem').src = data.url;
+                })
+                .catch(error => console.error('Erro ao carregar próxima imagem:', error));
+        }
+    </script>
+</body>
+</html>
