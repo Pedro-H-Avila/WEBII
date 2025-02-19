@@ -4,6 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galeria de Imagens</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+</head>
+<body>
+<div class="container">
+    <h5>Galeria de Imagens</h5>
+    <div class="row">
+        <div class="col s12">
+            <img id="imagem" src="" alt="Imagem da Galeria" class="responsive-img">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <button id="proxima" class="btn">Próxima</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.0.0.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    function carregarImagem() {
+        $.ajax({
+            url: 'http://localhost:3000/imagens',
+            method: 'GET',
+            success: function(data) {
+                $('#imagem').attr('src', data.url);
+            },
+            error: function() {
+                alert('Erro ao carregar a imagem.');
+            }
+        });
+    }
+
+    // Carrega a primeira imagem ao abrir a página
+    carregarImagem();
+
+    // Carrega a próxima imagem ao clicar no botão
+    $('#proxima').click(function() {
+        carregarImagem();
+    });
+});
+</script>
+</body>
+</html><!DOCTYPE html>
+<!-- <html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria de Imagens</title>
 </head>
 <body>
     <h1>Galeria de Imagens do Garfield</h1>
@@ -35,4 +84,4 @@
         }
     </script>
 </body>
-</html>
+</html> -->
